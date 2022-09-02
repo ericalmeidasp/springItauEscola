@@ -17,7 +17,6 @@ import java.util.UUID;
 public class AlunoService {
 
     private final AlunoMapper mapper;
-//    private final MemoryRepository<UUID, Aluno> repository;
     private final AlunoRepository repository;
 
     public AlunoResponse adicionar(AlunoRequest alunoRequest) {
@@ -25,14 +24,14 @@ public class AlunoService {
         return mapper.toResponse(repository.save(aluno));
     }
 
-    public void ativar(UUID id) throws ItemNaoExistenteException {
-        Aluno aluno = repository.findById(id).orElseThrow(() -> new ItemNaoExistenteException());
+    public void ativar(UUID id) {
+        Aluno aluno = repository.findById(id).orElseThrow(ItemNaoExistenteException::new);
         aluno.setAtivado(true);
         repository.save(aluno);
     }
 
-    public void desativar(UUID id) throws ItemNaoExistenteException {
-        Aluno aluno = repository.findById(id).orElseThrow(() -> new ItemNaoExistenteException());
+    public void desativar(UUID id) {
+        Aluno aluno = repository.findById(id).orElseThrow(ItemNaoExistenteException::new);
         aluno.setAtivado(false);
         repository.save(aluno);
     }
@@ -41,8 +40,8 @@ public class AlunoService {
         return mapper.mapAluno(repository.findAll());
     }
 
-    public AlunoResponse localizar(UUID id) throws ItemNaoExistenteException {
-        return mapper.toResponse(repository.findById(id).orElseThrow(() -> new ItemNaoExistenteException()));
+    public AlunoResponse localizar(UUID id) {
+        return mapper.toResponse(repository.findById(id).orElseThrow(ItemNaoExistenteException::new));
     }
 
     public Long quantidadeAlunosAtivo() {

@@ -1,16 +1,12 @@
 package com.itau.escolaItauSpring.service;
 
-import com.itau.escolaItauSpring.config.mapper.AlunoMapperImpl;
 import com.itau.escolaItauSpring.dto.request.AlunoRequest;
 import com.itau.escolaItauSpring.dto.response.AlunoResponse;
 import com.itau.escolaItauSpring.model.Aluno;
 import com.itau.escolaItauSpring.repository.AlunoRepository;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
@@ -33,7 +29,6 @@ public class AlunoServiceIntegrationTest {
 
     @AfterEach
     void removerAlunos() {
-
     }
 
     @Test
@@ -102,7 +97,6 @@ public class AlunoServiceIntegrationTest {
         aluno2.setCpf(30889L);
         aluno.setAtivado(Boolean.FALSE);
         alunoRepository.save(aluno2);
-
 
         List<AlunoResponse> alunoResponseList = alunoService.listar();
 
