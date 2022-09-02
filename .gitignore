@@ -3,7 +3,10 @@
 !src/**/build/
 /build
 /.idea/*
-
+/.idea/
+.gradle/*
+/.gradle/
+/gradle/
 *.iml
 
 #html
