@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Aluno.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">escolaItauSpring</a> &gt; <a href="index.source.html" class="el_package">com.itau.escolaItauSpring.model</a> &gt; <span class="el_source">Aluno.java</span></div><h1>Aluno.java</h1><pre class="source lang-java linenums">package com.itau.escolaItauSpring.model;
+
+
+import com.itau.escolaItauSpring.dto.request.AlunoRequest;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import java.util.List;
+import java.util.UUID;
+
+@Getter
+<span class="pc" id="L14">@Setter</span>
+@Entity
+public class Aluno {
+    @Id
+    @GeneratedValue
+    @Type(type=&quot;org.hibernate.type.UUIDCharType&quot;)
+<span class="fc" id="L20">    private UUID id;</span>
+    @Column(name = &quot;NOME&quot;, nullable = false, length = 200, unique = false)
+<span class="nc" id="L22">    private String nome;</span>
+    @Column(name = &quot;IDADE&quot;)
+<span class="nc" id="L24">    private Integer idade;</span>
+    @Column(name = &quot;CPF&quot;, nullable = false, unique = true)
+<span class="nc" id="L26">    private Long cpf;</span>
+    @Column(name = &quot;IS_ATIVO&quot;)
+<span class="fc" id="L28">    private Boolean ativado;</span>
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = &quot;ENDERECO_ID&quot;)
+<span class="nc" id="L32">    private Endereco endereco;</span>
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = &quot;ALUNO_ID&quot;)
+<span class="nc" id="L36">    private List&lt;Nota&gt; notas;</span>
+
+//    public  Integer[] notas;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = &quot;ALUNO_ID&quot;)
+<span class="nc" id="L41">    private List&lt;Curso&gt; cursos;</span>
+<span class="fc" id="L42">    public Aluno(){}</span>
+
+<span class="nc" id="L44">    public Aluno(AlunoRequest alunoRequest){</span>
+<span class="nc" id="L45">        this.nome = alunoRequest.getNome();</span>
+<span class="nc" id="L46">        this.idade = alunoRequest.getIdade();</span>
+<span class="nc" id="L47">        this.cpf = alunoRequest.getCpf();</span>
+<span class="nc" id="L48">        this.ativado = true;</span>
+<span class="nc" id="L49">    }</span>
+    public void exibirNotas(){
+//        for(int i = 0; i &lt; this.notas.length; i++){
+//            System.out.println(notas[i]);
+//        }
+<span class="nc" id="L54">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

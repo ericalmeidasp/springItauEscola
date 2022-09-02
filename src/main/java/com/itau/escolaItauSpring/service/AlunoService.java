@@ -6,9 +6,7 @@ import com.itau.escolaItauSpring.dto.response.AlunoResponse;
 import com.itau.escolaItauSpring.exception.ItemNaoExistenteException;
 import com.itau.escolaItauSpring.model.Aluno;
 import com.itau.escolaItauSpring.repository.AlunoRepository;
-import com.itau.escolaItauSpring.repository.MemoryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,7 +31,8 @@ public class AlunoService {
         repository.save(aluno);
     }
 
-    public void desativar(Aluno aluno) throws ItemNaoExistenteException {
+    public void desativar(UUID id) throws ItemNaoExistenteException {
+        Aluno aluno = repository.findById(id).orElseThrow(() -> new ItemNaoExistenteException());
         aluno.setAtivado(false);
         repository.save(aluno);
     }

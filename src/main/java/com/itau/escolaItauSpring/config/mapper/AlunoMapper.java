@@ -1,11 +1,9 @@
 package com.itau.escolaItauSpring.config.mapper;
 
-import com.itau.escolaItauSpring.dto.request.AlunoRequest;
-import com.itau.escolaItauSpring.dto.request.CursoRequest;
+import com.itau.escolaItauSpring.dto.request.*;
 import com.itau.escolaItauSpring.dto.response.AlunoResponse;
 import com.itau.escolaItauSpring.dto.response.CursoResponse;
-import com.itau.escolaItauSpring.model.Aluno;
-import com.itau.escolaItauSpring.model.Curso;
+import com.itau.escolaItauSpring.model.*;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 
@@ -22,8 +20,17 @@ public interface AlunoMapper {
     List<AlunoResponse> mapAluno(List<Aluno> alunos);
 
     @InheritInverseConfiguration
-    CursoResponse campoToResponse(Curso curso);
+    CursoResponse cursoModelToResponse(Curso curso);
 
     @InheritInverseConfiguration
-    Curso requestToModel(CursoRequest cursoRequest);
+    Curso cursoRequestToModel(CursoRequest cursoRequest);
+
+    @InheritInverseConfiguration
+    Endereco enderecoRequestToModel(EnderecoRequest enderecoRequest);
+
+    @InheritInverseConfiguration
+    Nota notaRequestToModel(NotaRequest notaRequest);
+
+    @InheritInverseConfiguration
+    Professor professorRequestToModel(ProfessorRequest professorRequest);
 }
