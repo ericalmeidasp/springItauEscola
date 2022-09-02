@@ -17,12 +17,12 @@ import java.util.UUID;
 public class AlunoService {
 
     private final AlunoMapper mapper;
-    //    private final MemoryRepository&lt;UUID, Aluno&gt; repository;
+//    private final MemoryRepository&lt;UUID, Aluno&gt; repository;
     private final AlunoRepository repository;
 
     public AlunoResponse adicionar(AlunoRequest alunoRequest) {
-<span class="nc" id="L24">        Aluno aluno = mapper.toModel(alunoRequest);</span>
-<span class="nc" id="L25">        return mapper.toResponse(repository.save(aluno));</span>
+<span class="fc" id="L24">        Aluno aluno = mapper.toModel(alunoRequest);</span>
+<span class="fc" id="L25">        return mapper.toResponse(repository.save(aluno));</span>
     }
 
     public void ativar(UUID id) throws ItemNaoExistenteException {
@@ -32,29 +32,29 @@ public class AlunoService {
 <span class="fc" id="L32">    }</span>
 
     public void desativar(UUID id) throws ItemNaoExistenteException {
-<span class="nc" id="L35">        Aluno aluno = repository.findById(id).orElseThrow(() -&gt; new ItemNaoExistenteException());</span>
-<span class="nc" id="L36">        aluno.setAtivado(false);</span>
-<span class="nc" id="L37">        repository.save(aluno);</span>
-<span class="nc" id="L38">    }</span>
+<span class="pc" id="L35">        Aluno aluno = repository.findById(id).orElseThrow(() -&gt; new ItemNaoExistenteException());</span>
+<span class="fc" id="L36">        aluno.setAtivado(false);</span>
+<span class="fc" id="L37">        repository.save(aluno);</span>
+<span class="fc" id="L38">    }</span>
 
     public List&lt;AlunoResponse&gt; listar() {
-<span class="nc" id="L41">        return mapper.mapAluno(repository.findAll());</span>
+<span class="fc" id="L41">        return mapper.mapAluno(repository.findAll());</span>
     }
 
     public AlunoResponse localizar(UUID id) throws ItemNaoExistenteException {
-<span class="nc" id="L45">        return mapper.toResponse(repository.findById(id).orElseThrow(() -&gt; new ItemNaoExistenteException()));</span>
+<span class="pc" id="L45">        return mapper.toResponse(repository.findById(id).orElseThrow(() -&gt; new ItemNaoExistenteException()));</span>
     }
 
     public Long quantidadeAlunosAtivo() {
-<span class="nc" id="L49">        return repository.countAlunoByAtivado(true);</span>
+<span class="fc" id="L49">        return repository.countAlunoByAtivado(true);</span>
     }
 
     public void removerPorCpf(Long cpf) {
-<span class="nc" id="L53">        repository.deleteByCpf(cpf);</span>
-<span class="nc" id="L54">    }</span>
+<span class="fc" id="L53">        repository.deleteByCpf(cpf);</span>
+<span class="fc" id="L54">    }</span>
 
     public List&lt;Aluno&gt; buscarPorNome(String nome) {
-<span class="nc" id="L57">        return repository.findByNomeContainingIgnoreCase(nome);</span>
+<span class="fc" id="L57">        return repository.findByNomeContainingIgnoreCase(nome);</span>
     }
 
 }

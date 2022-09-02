@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Getter
-<span class="pc" id="L14">@Setter</span>
+<span class="fc" id="L14">@Setter</span>
 @Entity
 public class Aluno {
     @Id
@@ -19,11 +19,11 @@ public class Aluno {
     @Type(type=&quot;org.hibernate.type.UUIDCharType&quot;)
 <span class="fc" id="L20">    private UUID id;</span>
     @Column(name = &quot;NOME&quot;, nullable = false, length = 200, unique = false)
-<span class="nc" id="L22">    private String nome;</span>
+<span class="fc" id="L22">    private String nome;</span>
     @Column(name = &quot;IDADE&quot;)
-<span class="nc" id="L24">    private Integer idade;</span>
+<span class="fc" id="L24">    private Integer idade;</span>
     @Column(name = &quot;CPF&quot;, nullable = false, unique = true)
-<span class="nc" id="L26">    private Long cpf;</span>
+<span class="fc" id="L26">    private Long cpf;</span>
     @Column(name = &quot;IS_ATIVO&quot;)
 <span class="fc" id="L28">    private Boolean ativado;</span>
 

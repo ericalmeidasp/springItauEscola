@@ -24,7 +24,7 @@ public class AlunoController {
 
     @GetMapping
     public ResponseEntity&lt;List&lt;AlunoResponse&gt;&gt;aluno(){
-<span class="nc" id="L27">        return ResponseEntity.ok(alunoService.listar());</span>
+<span class="fc" id="L27">        return ResponseEntity.ok(alunoService.listar());</span>
     }
 
     @PostMapping()
@@ -39,7 +39,7 @@ public class AlunoController {
 
     @GetMapping(&quot;/id/{id}&quot;)
     public ResponseEntity&lt;?&gt; buscarAluno(@PathVariable UUID id) throws ItemNaoExistenteException {
-<span class="nc" id="L42">        return ResponseEntity.ok(alunoService.localizar(id));</span>
+<span class="fc" id="L42">        return ResponseEntity.ok(alunoService.localizar(id));</span>
     }
 
     @PatchMapping(&quot;/{id}&quot;)
