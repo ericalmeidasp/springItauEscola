@@ -6,7 +6,7 @@
 /.idea/
 .gradle/*
 /.gradle/
-/gradle/
+
 *.iml
 
 #html
