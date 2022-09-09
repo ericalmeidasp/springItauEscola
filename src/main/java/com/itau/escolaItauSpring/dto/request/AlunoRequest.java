@@ -1,14 +1,14 @@
 package com.itau.escolaItauSpring.dto.request;
 
-import com.itau.escolaItauSpring.model.Curso;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
-@Getter @Setter
+@Data
+@NoArgsConstructor
 public class AlunoRequest {
+
     private String nome;
     private Integer idade;
     private Long cpf;
