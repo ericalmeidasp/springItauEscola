@@ -49,6 +49,7 @@ jacocoTestReport {
             fileTree(dir: it, exclude: [
                     "com/itau/escolaItauSpring/**/EscolaItauSpringApplication.class",
                     "com/itau/escolaItauSpring/dto/*",
+                    "com/itau/escolaItauSpring/model/*",
                     "**/config/*"
             ])
         }))
