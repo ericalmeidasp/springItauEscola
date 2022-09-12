@@ -2,6 +2,7 @@ package com.itau.escolaItauSpring.model;
 
 
 import com.itau.escolaItauSpring.dto.request.AlunoRequest;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
@@ -12,6 +13,7 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Aluno {
     @Id

@@ -1,13 +1,10 @@
 package com.itau.escolaItauSpring.service;
 
-//@ExtendWith(MockitoExtension.class) na classe de teste.
-// @InjectMocks -> Na classe onde vai ser testada.
-// @Mock -> Nas dependencias que vão ser simuladas.
-
-
 import com.itau.escolaItauSpring.config.mapper.AlunoMapper;
 import com.itau.escolaItauSpring.dto.request.AlunoRequest;
 import com.itau.escolaItauSpring.dto.response.AlunoResponse;
+import com.itau.escolaItauSpring.exception.ItemNaoExistenteException;
+import com.itau.escolaItauSpring.helper.AlunoHelper;
 import com.itau.escolaItauSpring.model.Aluno;
 import com.itau.escolaItauSpring.repository.AlunoRepository;
 import org.junit.jupiter.api.Assertions;
@@ -19,10 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AlunoServiceUnitTest {
@@ -35,91 +29,118 @@ public class AlunoServiceUnitTest {
     @Mock
     private AlunoMapper alunoMapper;
 
+    private Aluno aluno;
+
+    public AlunoServiceUnitTest() {
+        this.aluno = AlunoHelper.criarAluno();
+    }
+
     @Test
     void testAdicionar() {
-        Mockito.when(alunoMapper.toModel(ArgumentMatchers.any(AlunoRequest.class))).thenReturn(new Aluno());
-        Mockito.when(alunoRepository.save(ArgumentMatchers.any(Aluno.class))).thenReturn(new Aluno());
+        Mockito.when(alunoMapper.toModel(ArgumentMatchers.any(AlunoRequest.class))).thenReturn(aluno);
+        Mockito.when(alunoRepository.save(ArgumentMatchers.any(Aluno.class))).thenReturn(aluno);
         Mockito.when(alunoMapper.toResponse(ArgumentMatchers.any(Aluno.class))).thenReturn(new AlunoResponse());
 
-        AlunoResponse alunoResponse = alunoService.adicionar(new AlunoRequest());
+        alunoService.adicionar(new AlunoRequest());
 
-        Assertions.assertInstanceOf(AlunoResponse.class, alunoResponse);
+        Mockito.verify(alunoMapper, Mockito.times(1)).toModel(Mockito.any());
+        Mockito.verify(alunoRepository, Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(alunoMapper, Mockito.times(1)).toResponse(Mockito.any());
     }
 
     @Test
     void testAtivar() {
-        Aluno aluno = new Aluno();
-        aluno.setId(UUID.randomUUID());
-        aluno.setAtivado(Boolean.FALSE);
         Mockito.when(alunoRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(aluno));
+        aluno.setAtivado(Boolean.FALSE);
 
         Assertions.assertFalse(aluno.getAtivado());
         alunoService.ativar(aluno.getId());
+
         Assertions.assertTrue(aluno.getAtivado());
+        Mockito.verify(alunoRepository, Mockito.times(1)).save(aluno);
+    }
+
+    @Test
+    void testAtivarException() {
+        Mockito.when(alunoRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(ItemNaoExistenteException.class, () -> alunoService.ativar(UUID.randomUUID()));
+        Mockito.verify(alunoRepository, Mockito.times(0)).save(aluno);
     }
 
     @Test
     void testDesativar() {
-        Aluno aluno = new Aluno();
-        aluno.setId(UUID.randomUUID());
-        aluno.setAtivado(Boolean.TRUE);
         Mockito.when(alunoRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(aluno));
+        aluno.setAtivado(Boolean.TRUE);
 
         Assertions.assertTrue(aluno.getAtivado());
         alunoService.desativar(aluno.getId());
+
         Assertions.assertFalse(aluno.getAtivado());
+        Mockito.verify(alunoRepository, Mockito.times(1)).save(aluno);
     }
 
     @Test
-    void testeListar() {
+    void testDesativarException() {
+        Mockito.when(alunoRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(ItemNaoExistenteException.class, () -> alunoService.desativar(UUID.randomUUID()));
+        Mockito.verify(alunoRepository, Mockito.times(0)).save(aluno);
+    }
+
+    @Test
+    void testListar() {
         Mockito.when(alunoRepository.findAll()).thenReturn(new ArrayList<Aluno>());
         Mockito.when(alunoMapper.mapAluno(ArgumentMatchers.any())).thenReturn(new ArrayList<AlunoResponse>());
-        var list = alunoService.listar();
+
+        List<AlunoResponse> list = alunoService.listar();
+
         Assertions.assertEquals(0, list.size());
     }
 
     @Test
-    void testeLocalizar() {
-        Optional<Aluno> aluno = Optional.of(new Aluno());
-        aluno.get().setNome("Daiane");
-        Mockito.when(alunoRepository.findById(ArgumentMatchers.any())).thenReturn(aluno);
-
+    void testLocalizar() {
         AlunoResponse alunoResponse = new AlunoResponse();
-        alunoResponse.setNome(aluno.get().getNome());
+        alunoResponse.setId(aluno.getId());
+        Mockito.when(alunoRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(aluno));
         Mockito.when(alunoMapper.toResponse(ArgumentMatchers.any())).thenReturn(alunoResponse);
 
-        AlunoResponse alunoResponse1 = alunoService.localizar(UUID.randomUUID());
-        Assertions.assertEquals(alunoResponse1.getNome(), alunoResponse.getNome());
+        AlunoResponse resultado = alunoService.localizar(aluno.getId());
+
+        Assertions.assertEquals(resultado.getId(), alunoResponse.getId());
+    }
+
+    @Test
+    void testLocalizarException() {
+        Mockito.when(alunoRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(ItemNaoExistenteException.class, () -> alunoService.localizar(UUID.randomUUID()));
     }
 
     @Test
     void testQuantidadeAlunosAtivo() {
         Mockito.when(alunoRepository.countAlunoByAtivado(ArgumentMatchers.any())).thenReturn(2L);
+
         long quantidade = alunoService.quantidadeAlunosAtivo();
 
         Assertions.assertEquals(2L, quantidade);
     }
 
     @Test
-    void testRemoverPorCpf(){
-        Long cpf = 123L;
-        alunoService.removerPorCpf(cpf);
-        Mockito.verify(alunoRepository,Mockito.times(1)).deleteByCpf(ArgumentMatchers.any(Long.class));
+    void testRemoverPorCpf() {
+        alunoService.removerPorCpf(aluno.getCpf());
+
+        Mockito.verify(alunoRepository, Mockito.times(1)).deleteByCpf(ArgumentMatchers.anyLong());
     }
 
     @Test
     void testBuscarPorNome() {
-        Aluno aluno1 = new Aluno();
-        aluno1.setNome("Pedro");
+        List<Aluno> alunoList = Arrays.asList(aluno);
+        Mockito.when(alunoRepository.findByNomeContainingIgnoreCase(ArgumentMatchers.anyString())).thenReturn(alunoList);
 
-        List<Aluno> alunoList = new ArrayList<>();
-        alunoList.add(aluno1);
+        List<Aluno> alunosListByService = alunoService.buscarPorNome(aluno.getNome());
 
-        Mockito.when(alunoRepository.findByNomeContainingIgnoreCase(ArgumentMatchers.any(String.class))).thenReturn(alunoList);
-
-        List<Aluno> alunosListByService = alunoService.buscarPorNome("Pedro");
-
-        Assertions.assertEquals(alunoList, alunosListByService);
+        Mockito.verify(alunoRepository, Mockito.times(1)).findByNomeContainingIgnoreCase(aluno.getNome());
     }
 }
 
